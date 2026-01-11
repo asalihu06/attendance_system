@@ -1,0 +1,104 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark">Staff Management</h2>
+        <a href="{% url 'add_staff' %}" class="btn btn-brand-primary px-4 shadow-sm">
+    <i class="fa-solid fa-plus me-2"></i> Add New Staff
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4 py-3 text-muted small">STAFF DETAILS</th>
+                            <th class="py-3 text-muted small">DEPARTMENT</th>
+                            <th class="py-3 text-muted small">POSITION</th>
+                            <th class="py-3 text-center text-muted small">QR CODE</th>
+                            <th class="py-3 text-end pe-4 text-muted small">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for staff in staffs %}
+                        <tr>
+                            <td class="ps-4">
+                                <div class="fw-bold text-dark">{{ staff.name }}</div>
+                                <div class="text-muted small">ID: {{ staff.staff_id }}</div>
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark border">{{ staff.department }}</span>
+                            </td>
+                            <td>{{ staff.position }}</td>
+                            <td class="text-center">
+                                {% if staff.qr_code %}
+                                <div class="qr-container">
+                                    <img src="{{ staff.qr_code.url }}" alt="QR" class="qr-thumbnail shadow-sm">
+                                    <div class="qr-actions mt-1">
+                                        <a href="{{ staff.qr_code.url }}" download="QR_{{ staff.staff_id }}.png" class="text-decoration-none smaller text-orange">
+                                            <i class="fa-solid fa-download"></i> Save
+                                        </a>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <span class="text-muted italic small">Not Generated</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end pe-4">
+                                <div class="btn-group shadow-sm rounded">
+                                    <a href="{% url 'edit_staff' staff.pk %}" class="btn btn-sm btn-white border" title="Edit">
+                                        <i class="fa-solid fa-pen-to-square text-primary"></i>
+                                    </a>
+                                    <a href="{% url 'delete_staff' staff.pk %}" class="btn btn-sm btn-white border" 
+                                       onclick="return confirm('Are you sure you want to delete this staff member?');" title="Delete">
+                                        <i class="fa-solid fa-trash-can text-danger"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <i class="fa-solid fa-users-slash d-block fs-1 text-muted mb-3"></i>
+                                <p class="text-muted">No staff records found in the database.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-orange { color: #E74E37 !important; }
+    .btn-white { background: white; }
+    .btn-white:hover { background: #f8f9fa; }
+    
+    .qr-thumbnail {
+        width: 50px;
+        height: 50px;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        border: 1px solid #eee;
+        cursor: zoom-in;
+    }
+
+    .qr-thumbnail:hover {
+        transform: scale(4);
+        position: relative;
+        z-index: 1000;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
+    }
+
+    .qr-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .smaller { font-size: 0.75rem; }
+</style>
+{% endblock %}

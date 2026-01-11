@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}StaffSync{% endblock %}</title>
+    
+    <link rel="icon" type="image/png" href="{% static 'assets/favicon.png' %}">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --brand-orange: #E74E37;
+            --sidebar-dark: #1e2125;
+            --bg-light: #f4f7f6;
+        }
+
+        body { 
+            display: flex; 
+            min-height: 100vh; 
+            background-color: var(--bg-light); 
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-dark);
+            color: white;
+            padding: 0;
+            position: fixed;
+            height: 100vh;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            background: #1e2125;;
+            text-align: center;
+        }
+
+        .sidebar-logo {
+            width: 160px;
+            height: auto;
+            border: none;
+            outline: none;
+            display: block;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+            mix-blend-mode: screen; 
+            filter: brightness(1.2);
+        }
+
+        .sidebar-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 20px 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            padding: 5px 20px;
+        }
+
+        .sidebar a, .logout-btn {
+            display: flex;
+            align-items: center;
+            color: #adb5bd;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            width: 100%;
+        }
+
+        .sidebar i {
+            margin-right: 12px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background: var(--brand-orange);
+            color: white !important;
+            transform: translateX(5px);
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            color: #adb5bd;
+        }
+
+        .logout-btn:hover {
+            background: rgba(220, 53, 69, 0.1);
+            color: #ff4d4d;
+        }
+
+        .content {
+            flex-grow: 1;
+            margin-left: 260px;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <a href="{% url 'dashboard_home' %}">
+                <img src="{% static 'assets/dashboardlogo.png' %}" 
+                     alt="StaffSync Logo" 
+                     class="sidebar-logo">
+            </a>
+        </div>
+        
+        <ul>
+            <li>
+                <a href="{% url 'dashboard_home' %}" class="{% if request.resolver_match.url_name == 'dashboard_home' %}active{% endif %}">
+                    <i class="fa-solid fa-house"></i> Home
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'dashboard_reports' %}" class="{% if request.resolver_match.url_name == 'dashboard_reports' %}active{% endif %}">
+                    <i class="fa-solid fa-chart-line"></i> Reports
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'staff_list' %}" class="{% if request.resolver_match.url_name == 'staff_list' %}active{% endif %}">
+                    <i class="fa-solid fa-users"></i> Staff
+                </a>
+            </li>
+            
+            <li style="margin-top: 50px;">
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center mt-5">
+  <div class="row w-100 justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm border-0" style="background-color: #fff; border-radius: 12px;">
+        <div class="card-body p-4 p-md-5">
+          
+          <div class="text-center mb-4">
+             <div class="d-inline-flex align-items-center justify-content-center mb-3" style="background-color: #E74E37; width: 50px; height: 50px; border-radius: 10px;">
+                <i class="fa-solid fa-user-plus text-white fs-4"></i>
+             </div>
+             <h4 class="fw-bold text-dark">Add New Staff</h4>
+             <p class="text-muted small">Enter the details to create a new profile</p>
+          </div>
+
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% for field in form %}
+              <div class="mb-3 custom-form-group">
+                <label class="form-label fw-semibold text-secondary small text-uppercase">{{ field.label }}</label>
+                {{ field }}
+                
+                {% if field.help_text %}
+                  <small class="form-text text-muted d-block mt-1">{{ field.help_text }}</small>
+                {% endif %}
+                
+                {% for error in field.errors %}
+                  <div class="text-danger small mt-1"><i class="fa-solid fa-circle-exclamation me-1"></i>{{ error }}</div>
+                {% endfor %}
+              </div>
+            {% endfor %}
+
+            <div class="d-flex justify-content-end mt-4 pt-3 border-top gap-2">
+              <a href="{% url 'staff_list' %}" class="btn btn-outline-secondary px-4 fw-bold">
+                Cancel
+              </a>
+              <button type="submit" class="btn text-white px-5 fw-bold shadow-sm" style="background-color: #E74E37; border: none;">
+                Save Staff
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    /* Styling the Django-rendered fields to look modern */
+    .custom-form-group input, 
+    .custom-form-group select, 
+    .custom-form-group textarea {
+        display: block;
+        width: 100%;
+        padding: 0.7rem 0.85rem;
+        font-size: 1rem;
+        color: #212529;
+        background-color: #fcfcfc;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        transition: all .2s ease-in-out;
+    }
+
+    .custom-form-group input:focus {
+        border-color: #E74E37;
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(231, 78, 55, 0.1);
+        background-color: #fff;
+    }
+
+    /* Standardizing Label spacing */
+    .custom-form-group label {
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+    }
+</style>
+{% endblock %}

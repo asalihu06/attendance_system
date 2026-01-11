@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 40px;
+        }
+        .card {
+            border: 1px solid #ccc;
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        h2 { color: #2c7; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>{{ message }}</h2>
+        <p><strong>Name:</strong> {{ staff.name }}</p>
+        <p><strong>Staff ID:</strong> {{ staff.staff_id }}</p>
+        <p><strong>Department:</strong> {{ staff.department }}</p>
+        <p><strong>Position:</strong> {{ staff.position }}</p>
+        <p><strong>Status:</strong> {{ attendance.status }}</p>
+        <p><strong>Date:</strong> {{ attendance.date }}</p>
+        <p><strong>Time:</strong> {{ attendance.time_in|default:attendance.time_out }}</p>
+    </div>
+</body>
+</html>

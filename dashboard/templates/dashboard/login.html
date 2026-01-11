@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | StaffSync</title>
+    
+    <link rel="icon" type="image/png" href="{% static 'assets/favicon.png' %}">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --brand-orange: #E74E37;
+            --brand-hover: #cf3f2c;
+            --bg-light: #f5f6fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: var(--bg-light);
+            margin: 0;
+            opacity: 0;
+            animation: bodyFadeIn 0.6s ease forwards;
+        }
+
+        @keyframes bodyFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .login-container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 360px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: containerFadeIn 0.5s ease forwards;
+            animation-delay: 0.2s;
+        }
+
+        @keyframes containerFadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .login-header h2 {
+            margin: 5px 0;
+            color: #2d3436;
+            font-weight: 700;
+        }
+
+        p { margin-bottom: 15px; }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #636e72;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
+            background-color: #fcfcfc;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--brand-orange);
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(231, 78, 55, 0.1);
+        }
+
+        button {
+            background: var(--brand-orange);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: var(--brand-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(231, 78, 55, 0.3);
+        }
+
+        .errorlist {
+            background-color: #fff2f0;
+            border: 1px solid #ffa39e;
+            color: #ff4d4f;
+            list-style: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <img src="https://res.cloudinary.com/dkj0s6pqw/image/upload/v1768069592/staffsync_logo_e_background_removal_b_rgb_FFFFFF_c_crop_w_800_h_290_f_png_wpzywj.png"
+                 alt="StaffSync Logo" class="login-logo">
+            
+            <h2>Admin Login</h2>
+            <p style="color: #b2bec3; font-size: 0.9rem; margin: 0;">Secure access to your dashboard</p>
+        </div>
+
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            {% if form.errors %}
+                <ul class="errorlist">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <button type="submit">Login to Dashboard</button>
+        </form>
+    </div>
+</body>
+</html>
