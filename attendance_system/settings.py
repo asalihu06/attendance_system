@@ -17,7 +17,7 @@ load_dotenv(dotenv_path=env_path)
 SECRET_KEY = 'django-insecure-v_zj&884tuspovga*=*ukea*9(l#z0vz1w44_5(jp$e!$d#$yg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.161', '192.168.1.149']
 
@@ -122,6 +122,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static", 
 ]
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
