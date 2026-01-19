@@ -19,7 +19,12 @@ SECRET_KEY = 'django-insecure-v_zj&884tuspovga*=*ukea*9(l#z0vz1w44_5(jp$e!$d#$yg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.1.161', '192.168.1.149' 'https://attendance-system-yuh5.onrender.com']
+ALLOWED_HOSTS = [
+    "attendance-system-yuh5.onrender.com",
+    ".onrender.com",
+    "localhost",
+    "127.0.0.1",
+]
 
 
 
