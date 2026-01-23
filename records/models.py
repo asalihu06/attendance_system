@@ -18,17 +18,19 @@ class Staff(models.Model):
     qr_code = models.ImageField(upload_to='qr_codes/', blank=True, null=True)
 
     def save(self, *args, **kwargs):
+        base_url = os.environ.get('BASE_URL', 'http://127.0.0.1:8000')
+        
         if not self.qr_code or 'res.cloudinary.com' not in str(self.qr_code):
-            qr_data = f"http://192.168.1.161:8000/dashboard/mark/{self.staff_id}/"
+            qr_data = f"{base_url}/dashboard/mark/{self.staff_id}/"
             qr_img = qrcode.make(qr_data).convert("RGB")
             
             buffer = BytesIO()
             qr_img.save(buffer, format="PNG")
-        
-        # This part sends the file to the 'default' storage (Cloudinary)
-        file_name = f"qr_{self.staff_id}.png"
-        self.qr_code.save(file_name, ContentFile(buffer.getvalue()), save=False)
-        buffer.close()
+            
+            file_name = f"qr_{self.staff_id}.png"
+            # Save the file to Cloudinary via ContentFile
+            self.qr_code.save(file_name, ContentFile(buffer.getvalue()), save=False)
+            buffer.close()
         
         super().save(*args, **kwargs)
 
