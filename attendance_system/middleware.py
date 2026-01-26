@@ -7,20 +7,25 @@ class OfficeOnlyMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        # Render uses a proxy, so we must check HTTP_X_FORWARDED_FOR
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         
         if x_forwarded_for:
-            # The first IP in the list is the actual user
             visitor_ip = x_forwarded_for.split(',')[0].strip()
         else:
             visitor_ip = request.META.get('REMOTE_ADDR')
 
-        allowed_ip = os.environ.get('OFFICE_IP')
+        # We will now look for a comma-separated list of allowed prefixes
+        # Example: "105.117., 105.112., 102.89."
+        allowed_prefixes_str = os.environ.get('ALLOWED_IP_PREFIXES', '')
+        allowed_prefixes = [p.strip() for p in allowed_prefixes_str.split(',') if p.strip()]
 
-        # Logic: If we are in production (DEBUG=False) and the IP doesn't match, block them.
-        if not settings.DEBUG and allowed_ip:
-            if visitor_ip != allowed_ip:
+        if not settings.DEBUG and allowed_prefixes:
+            # Check if the visitor's IP starts with ANY of our allowed prefixes
+            is_allowed = any(visitor_ip.startswith(prefix) for prefix in allowed_prefixes)
+            
+            if not is_allowed:
+                # Optional: Print to logs so you can see blocked IPs for debugging
+                print(f"Blocking unauthorized access from IP: {visitor_ip}")
                 raise PermissionDenied
         
         return self.get_response(request)
